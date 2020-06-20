@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "DankMono-Regular";
+  src: url("./assets/fonts/DankMono-Regular.eot"); /* IE9 Compat Modes */
+  src: url("./assets/fonts/DankMono-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("./assets/fonts/DankMono-Regular.otf") format("opentype"),
+    /* Open Type Font */ url("./assets/fonts/DankMono-Regular.svg")
+      format("svg"),
+    /* Legacy iOS */ url("./assets/fonts/DankMono-Regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("./assets/fonts/DankMono-Regular.woff")
+      format("woff"),
+    /* Modern Browsers */ url("./assets/fonts/DankMono-Regular.woff2")
+      format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: Dank Mono, "Courier New", Courier, monospace !important;
+}
