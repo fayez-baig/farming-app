@@ -10,6 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Form, Field } from "react-final-form";
 
 function Copyright() {
   return (
@@ -24,6 +25,7 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -41,20 +43,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const onSubmit = async (values) => {
+  await sleep(1000);
+  window.alert(JSON.stringify(values, 0, 2));
+};
+
+const required = (value) => (value ? undefined : "Required");
+
 const Login = (props) => {
   const classes = useStyles();
-
-  const handleLogin = (event) => {
-    event.preventDefault();
-
-    const user = {};
-    const data = new FormData(event.target);
-
-    for (let entry of data.entries()) {
-      user[entry[0]] = entry[1];
-    }
-    console.log({ user }); // reference by form input's `name` ta
-  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -65,54 +64,83 @@ const Login = (props) => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleLogin}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Login
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link
-                color="inherit"
-                onClick={() => {
-                  props.history.push("/signup");
-                }}
-              >
-                Create an Account
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
       </div>
+      <Form
+        className={classes.form}
+        onSubmit={onSubmit}
+        render={({ handleSubmit, form, invalid }) => (
+          <form noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Field name="firstName" validate={required}>
+                {({ input, meta }) => (
+                  <Grid item xs={12}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      error={meta.error && meta.touched}
+                      helperText={
+                        meta.error && meta.touched
+                          ? "Please enter correct details"
+                          : ""
+                      }
+                      autoFocus
+                    />
+                  </Grid>
+                )}
+              </Field>
+              <Field name="password" validate={required}>
+                {({ input, meta }) => (
+                  <Grid item xs={12}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      label="Password"
+                      type="password"
+                      id="password"
+                      error={meta.error && meta.touched}
+                      helperText={
+                        meta.error && meta.touched
+                          ? "Please enter correct details"
+                          : ""
+                      }
+                    />
+                  </Grid>
+                )}
+              </Field>
+            </Grid>
+            <div className="buttons">
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={invalid}
+              >
+                Login
+              </Button>
+            </div>
+          </form>
+        )}
+      />
+
+      <Grid container justify="flex-end">
+        <Grid item>
+          <Link
+            color="inherit"
+            onClick={() => {
+              props.history.push("/signup");
+            }}
+          >
+            Create an Account
+          </Link>
+        </Grid>
+      </Grid>
+
       <Box mt={5}>
         <Copyright />
       </Box>
