@@ -86,7 +86,6 @@ const Login = (props) => {
                           ? "Please enter correct details"
                           : ""
                       }
-                      autoFocus
                     />
                   </Grid>
                 )}

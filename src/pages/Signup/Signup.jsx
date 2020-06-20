@@ -3,16 +3,21 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
+
 import Grid from "@material-ui/core/Grid";
 
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+import { Form, Field } from "react-final-form";
+
+import { validateSignup, signupSchema } from "./../../helpers/validations";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -26,18 +31,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Signup(props) {
+const Signup = () => {
   const classes = useStyles();
-  const handleSignup = (event) => {
-    event.preventDefault();
 
-    const user = {};
-    const data = new FormData(event.target);
-
-    for (let entry of data.entries()) {
-      user[entry[0]] = entry[1];
-    }
-    console.log({ user }); // reference by form input's `name` ta
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const onSubmit = async (values) => {
+    await sleep(1000);
+    console.log(JSON.stringify(values, 0, 2));
   };
 
   return (
@@ -46,114 +46,169 @@ export default function Signup(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSignup}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="address"
-                label="Address"
-                name="address"
-              />
+      </div>
+      <Form
+        className={classes.form}
+        onSubmit={onSubmit}
+        validate={validateSignup(signupSchema)}
+        render={({ handleSubmit, form, invalid }) => (
+          <form noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Field name="firstName">
+                {({ input, meta }) => (
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      label="First Name"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+              <Field name="lastName">
+                {({ input, meta }) => (
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      label="Last Name"
+                      id="lastName"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+
+              <Field name="email">
+                {({ input, meta }) => (
+                  <Grid item xs={12}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      type="email"
+                      label="Email Address"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+              <Field name="password">
+                {({ input, meta }) => (
+                  <Grid item xs={12}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      label="Password"
+                      type="password"
+                      id="password"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+              <Field name="address">
+                {({ input, meta }) => (
+                  <Grid item xs={12}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      label="Address"
+                      id="address"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+
+              <Field name="state">
+                {({ input, meta }) => (
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      id="state"
+                      label="State"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+              <Field name="city">
+                {({ input, meta }) => (
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      {...input}
+                      variant="outlined"
+                      fullWidth
+                      label="City"
+                      id="city"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+
+              <Field name="phone">
+                {({ input, meta }) => (
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      {...input}
+                      inputProps={{
+                        maxLength: 10,
+                      }}
+                      variant="outlined"
+                      fullWidth
+                      id="phone"
+                      label="Phone Number"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
+              <Field name="pin">
+                {({ input, meta }) => (
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      {...input}
+                      inputProps={{
+                        maxLength: 6,
+                      }}
+                      variant="outlined"
+                      fullWidth
+                      label="Pin Code"
+                      id="pin"
+                      error={meta.error && meta.touched}
+                    />
+                  </Grid>
+                )}
+              </Field>
             </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="city"
-                variant="outlined"
-                required
+            <div className="buttons">
+              <Button
+                type="submit"
                 fullWidth
-                id="city"
-                label="City"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="pin"
-                label="Pin Code"
-                name="pin"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="phone"
-                label="Phone Number"
-                name="phone"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              Already have an account ?&nbsp;
-              <Link
-                variant="body2"
-                onClick={() => props.history.push("/login")}
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={invalid}
               >
-                Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
+                Sign Up
+              </Button>
+            </div>
+          </form>
+        )}
+      />
     </Container>
   );
-}
+};
+export default Signup;
