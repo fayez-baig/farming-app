@@ -7,11 +7,9 @@ import Farm from "./../pages/Farm/Farm";
 const AppRouter = () => {
   return (
     <Router>
-      {/* <Container> */}
       <Route exact path="/" component={Farm} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/signup" component={Signup} />
-      {/* </Container> */}
     </Router>
   );
 };
