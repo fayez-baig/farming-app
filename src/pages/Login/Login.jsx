@@ -1,10 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -17,10 +15,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="#">
-        The Farming App
-      </Link>{" "}
-      {new Date().getFullYear()}
+      The Farming App {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -46,12 +41,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+const Login = (props) => {
   const classes = useStyles();
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    const user = {};
+    const data = new FormData(event.target);
+
+    for (let entry of data.entries()) {
+      user[entry[0]] = entry[1];
+    }
+    console.log({ user }); // reference by form input's `name` ta
+  };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -59,7 +65,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleLogin}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -69,7 +75,7 @@ export default function Login() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                autoFocus
               />
             </Grid>
             <Grid item xs={12}>
@@ -81,7 +87,6 @@ export default function Login() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
               />
             </Grid>
           </Grid>
@@ -96,9 +101,14 @@ export default function Login() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              {/* <Link href="#" variant="body2"> */}
-              Already have an account? Sign in
-              {/* </Link> */}
+              <Link
+                color="inherit"
+                onClick={() => {
+                  props.history.push("/signup");
+                }}
+              >
+                Create an Account
+              </Link>
             </Grid>
           </Grid>
         </form>
@@ -108,4 +118,5 @@ export default function Login() {
       </Box>
     </Container>
   );
-}
+};
+export default Login;

@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
+
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -25,21 +26,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Signup() {
+export default function Signup(props) {
   const classes = useStyles();
+  const handleSignup = (event) => {
+    event.preventDefault();
+
+    const user = {};
+    const data = new FormData(event.target);
+
+    for (let entry of data.entries()) {
+      user[entry[0]] = entry[1];
+    }
+    console.log({ user }); // reference by form input's `name` ta
+  };
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSignup}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
                 name="firstName"
                 variant="outlined"
                 required
@@ -57,7 +67,6 @@ export default function Signup() {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"
               />
             </Grid>
             <Grid item xs={12}>
@@ -68,7 +77,6 @@ export default function Signup() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
               />
             </Grid>
             <Grid item xs={12}>
@@ -80,7 +88,6 @@ export default function Signup() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
               />
             </Grid>
             <Grid item xs={12}>
@@ -88,22 +95,20 @@ export default function Signup() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="address"
+                label="Address"
+                name="address"
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                name="city"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="city"
+                label="City"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -111,10 +116,9 @@ export default function Signup() {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                id="pin"
+                label="Pin Code"
+                name="pin"
               />
             </Grid>
             <Grid item xs={12}>
@@ -122,10 +126,9 @@ export default function Signup() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="phone"
+                label="Phone Number"
+                name="phone"
               />
             </Grid>
           </Grid>
@@ -140,8 +143,12 @@ export default function Signup() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
+              Already have an account ?&nbsp;
+              <Link
+                variant="body2"
+                onClick={() => props.history.push("/login")}
+              >
+                Sign in
               </Link>
             </Grid>
           </Grid>
